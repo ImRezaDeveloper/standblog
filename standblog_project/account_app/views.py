@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 
 # Create your views here.
 
+# loginAuth
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -23,3 +24,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+# Register Auth
+def register_user(request):
+    return render(request, 'account_app/register.html', {})
