@@ -61,7 +61,7 @@ ROOT_URLCONF = 'standblog_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # 👈 این خط باید وجود داشته باشه
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
