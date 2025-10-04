@@ -78,7 +78,7 @@ https://templatemo.com/tm-551-stand-blog
                       {% else %}
                       <img src="{% static 'images/default.jpg' %}" width="20px" height="20px" style="border-radius: 100%;">
                     {% endif %}
-                    <a class="nav-link">{{user.profile.father_s_name}}</a>
+                    <a class="nav-link">{{user.profile}}</a>
                     <a class="nav-link bg-danger" href="{% url 'logout' %}">logout</a>
                   {% endif %}
                 </div>

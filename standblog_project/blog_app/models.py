@@ -9,6 +9,15 @@ class Category(models.Model):
     
     def __str__(self):
         return self.title
+    
+# build custom queryset
+class ArticleManager(models.Manager):
+    def counter(self):
+        return len(self.all())
+    
+    def get_queryset(self):
+        return super(ArticleManager, self).get_queryset().filter(title='Blog')
+    
 class ArticleModel(models.Model):
     # CHOISES = (
     #     ('A', 'Python'),
@@ -21,6 +30,9 @@ class ArticleModel(models.Model):
     image = models.ImageField(upload_to='media/blogs', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    # custom queryset
+    objects = models.Manager()
+    custom_query = ArticleManager()
     
     def __str__(self):
         return self.title
