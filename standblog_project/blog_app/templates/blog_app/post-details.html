@@ -63,7 +63,7 @@
                     </div>
                     <div class="down-content">
                       <span>{{article.category.first}}</span>
-                      <a href="{% url 'single-article' article.id %}"><h4>{{article.title}}</h4></a>
+                      <a href="{% url 'single-article' article.slug %}"><h4>{{article.title}}</h4></a>
                       <ul class="post-info">
                         <li><a href="#">{{article.author.username}}</a></li>
                         <li><a href="#">{{article.created}}</a></li>

@@ -24,6 +24,9 @@ class ArticleModel(models.Model):
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=100, null=True, blank=True)
     
+    class Meta:
+        ordering = ('-created',)
+    
     def save(self):
         self.slug = slugify(self.title)
         super().save()
