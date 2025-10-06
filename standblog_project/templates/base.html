@@ -57,23 +57,23 @@ https://templatemo.com/tm-551-stand-blog
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
+                <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'home' %}">Home
-                  <span class="sr-only">(current)</span>
+                  {% comment %} <span class="sr-only">(current)</span> {% endcomment %}
                 </a>
               </li> 
-              <li class="nav-item">
+              <li class="nav-item {% if request.resolver_match.url_name == 'about-us' %}active{% endif %} %}">
                 <a class="nav-link" href="about.html">About Us</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="blog.html">Blog Entries</a>
+              <li class="nav-item {% if request.resolver_match.url_name == 'articles' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'articles' %}">AllPosts</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Post Details</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="contact.html">Contact Us</a>
-              </li>
+              </li>              
               {% if request.user.is_authenticated %}
                 <li class="nav-item">
                 <div class="d-flex">
