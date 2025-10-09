@@ -1,6 +1,7 @@
-from blog_app.models import ArticleModel
+from blog_app.models import ArticleModel, Category
 from django.shortcuts import render
 
 def recent_article(request):
     articles = ArticleModel.objects.all()[:3]
-    return {'recents_articles': articles}
+    categories = Category.objects.all()
+    return {'recents_articles': articles, 'categories': categories}

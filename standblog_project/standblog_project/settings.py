@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     'home_app',
     'account_app',
     'blog_app',
-    'django_cleanup'
+    'django_cleanup',
+    
+    # library
+    'django_render_partial',
+    'django_social_share'
 ]
 
 
