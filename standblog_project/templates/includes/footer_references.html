@@ -21,5 +21,17 @@
       }
     </script>
 
+    <script>
+document.querySelectorAll('.reply-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const commentId = btn.getAttribute('data-comment-id');
+    const form = document.getElementById('reply-form-' + commentId);
+    // toggle نمایش فرم
+    form.style.display = form.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
+
+
   </body>
 </html>

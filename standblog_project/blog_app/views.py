@@ -1,12 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from .models import ArticleModel, Category
+from .models import ArticleModel, Category, Comment, Reply_Comment
 from django.core.paginator import Paginator
 
 # Create your views here.
 
 def post_detail(request, slug):
     article = get_object_or_404(ArticleModel, slug=slug)
-    return render(request, 'blog_app/post-details.html', {'article': article})
+    reply_comments = Reply_Comment.objects.all()
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        body = request.POST.get('body')
+        
+        Comment.objects.create(article=article, user=name, name=name, body=body)
+    comments = article.article_comment.all()
+    return render(request, 'blog_app/post-details.html', {'article': article, 'comments': comments})
 
 def article_list(request):
     articles = ArticleModel.objects.all()
