@@ -10,12 +10,15 @@ def post_detail(request, slug):
 
 def article_list(request):
     articles = ArticleModel.objects.all()
-    return render(request, 'blog_app/article_list.html', {'articles': articles})
+    
+    # paginator
+    page = request.GET.get('page')
+    paginator = Paginator(articles, 2)
+    object_list = paginator.get_page(page)
+    return render(request, 'blog_app/article_list.html', {'articles': object_list})
 
 def categories_articles(request, pk):
     categories = get_object_or_404(Category, id=pk)
     articles = categories.article_category.all()
-    
-    # paginator
-    
+
     return render(request, 'blog_app/article_list.html', {'articles': articles})
