@@ -51,5 +51,5 @@ class Reply_Comment(models.Model):
     body = models.TextField(max_length=300, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
-    def __str__(self):
-        return self.body[:20]
+    # def __str__(self):
+        # return self.body[:20]

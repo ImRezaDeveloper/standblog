@@ -1,20 +1,30 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import ArticleModel, Category, Comment, Reply_Comment
 from django.core.paginator import Paginator
+from .forms import ContactUsForms
 
 # Create your views here.
 
 def post_detail(request, slug):
     article = get_object_or_404(ArticleModel, slug=slug)
-    reply_comments = Reply_Comment.objects.all()
     
     if request.method == 'POST':
         name = request.POST.get('name')
         body = request.POST.get('body')
         
-        Comment.objects.create(article=article, user=name, name=name, body=body)
+        comment_instance = Comment.objects.create(article=article, user=request.user, name=name, body=body)
+        # فقط اگر reply جدید به یک کامنت موجوده، comment_instance رو بهش پاس بده
+        # Reply_Comment.objects.create(comment=comment_instance, user=request.user, body="...")
+
     comments = article.article_comment.all()
-    return render(request, 'blog_app/post-details.html', {'article': article, 'comments': comments})
+    # replies = Reply_Comment.objects.filter(comment__article=article)
+    
+    return render(request, 'blog_app/post-details.html', {
+        'article': article,
+        'comments': comments,
+        'replyies': replies
+    })
+
 
 def article_list(request):
     articles = ArticleModel.objects.all()
@@ -38,3 +48,13 @@ def search_article(request):
     paginator = Paginator(articles, 1)
     object_list = paginator.get_page(page)
     return render(request,'blog_app/article_list.html', {'articles': object_list, 'q': q})
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUsForms(request.POST)   
+        if form.is_valid():
+            print(form.cleaned_data['name'])
+            return redirect('home')
+    else:
+        form = ContactUsForms()
+    return render(request, 'blog_app/contact_us.html', {'form': form})
