@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import ArticleModel, Category, Comment, Reply_Comment
 from django.core.paginator import Paginator
 from .forms import ContactUsForms
+from django.db.models import Count
 
 # Create your views here.
 
@@ -27,8 +28,8 @@ def post_detail(request, slug):
 
 
 def article_list(request):
-    articles = ArticleModel.objects.all()
-    
+    articles = ArticleModel.objects.annotate(comment_count=Count('article_comment'))
+
     # paginator
     page = request.GET.get('page')
     paginator = Paginator(articles, 1)
