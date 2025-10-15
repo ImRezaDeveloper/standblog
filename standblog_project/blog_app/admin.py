@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ArticleModel, Category, Comment, Reply_Comment
+from .models import ArticleModel, Category, Comment
 
 # Register your models here.
 
@@ -9,4 +9,3 @@ class ArticleAdmin(admin.ModelAdmin):
 admin.site.register(ArticleModel, ArticleAdmin)
 admin.site.register(Category)
 admin.site.register(Comment)
-admin.site.register(Reply_Comment)

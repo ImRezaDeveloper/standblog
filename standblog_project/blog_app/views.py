@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import ArticleModel, Category, Comment, Reply_Comment
+from .models import ArticleModel, Category, Comment
 from django.core.paginator import Paginator
 from .forms import ContactUsForms
 from django.db.models import Count
@@ -10,20 +10,12 @@ def post_detail(request, slug):
     article = get_object_or_404(ArticleModel, slug=slug)
     
     if request.method == 'POST':
-        name = request.POST.get('name')
         body = request.POST.get('body')
-        
-        comment_instance = Comment.objects.create(article=article, user=request.user, name=name, body=body)
-        # فقط اگر reply جدید به یک کامنت موجوده، comment_instance رو بهش پاس بده
-        # Reply_Comment.objects.create(comment=comment_instance, user=request.user, body="...")
-
-    comments = article.article_comment.all()
-    # replies = Reply_Comment.objects.filter(comment__article=article)
+        parent_id = request.POST.get('parent_id')
+        Comment.objects.create(body=body, article=article, user=request.user, parent_id=parent_id)
     
     return render(request, 'blog_app/post-details.html', {
-        'article': article,
-        'comments': comments,
-        # 'replyies': replies
+        'article': article
     })
 
 
