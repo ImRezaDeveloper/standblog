@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import ArticleModel, Category, Comment
+from .models import ArticleModel, Category, Comment, ContactUs
 from django.core.paginator import Paginator
 from .forms import ContactUsForms
 from django.db.models import Count
@@ -46,7 +46,10 @@ def contact_us(request):
     if request.method == 'POST':
         form = ContactUsForms(request.POST)   
         if form.is_valid():
-            print(form.cleaned_data['name'])
+            title = form.cleaned_data['title']
+            text = form.cleaned_data['text']
+            email = form.cleaned_data['email']
+            ContactUs.objects.create(title=title, text=text, email=email)
             return redirect('home')
     else:
         form = ContactUsForms()

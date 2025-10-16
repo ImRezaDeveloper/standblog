@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     
     # library
     'django_render_partial',
-    'django_social_share'
+    'django_social_share',
+    'widget_tweaks'
 ]
 
 

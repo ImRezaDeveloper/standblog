@@ -45,3 +45,13 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.body[:20]
+    
+# ContactUs
+class ContactUs(models.Model):
+    title = models.CharField(max_length=100)
+    text = models.CharField(max_length=100)
+    email = models.EmailField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.title
