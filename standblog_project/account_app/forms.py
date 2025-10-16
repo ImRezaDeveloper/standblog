@@ -14,4 +14,8 @@ class LoginForm(forms.Form):
             return self.cleaned_data.get('password')
         
         raise ValidationError('username or password is wrong!')
-    
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')

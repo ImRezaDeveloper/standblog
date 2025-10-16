@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
-from .forms import LoginForm
+from .forms import LoginForm, UserEditForm
 
 # Create your views here.
 
@@ -52,4 +52,11 @@ def register_user(request):
 
 # edit-info-user
 def edit_info_user(request):
-    return render(request, 'account_app/edit-info.html', {})
+    user = request.user
+    form = UserEditForm(instance=user)
+    if request.method == 'POST':
+        form = UserEditForm(instance=user, data=request.POST)
+        
+        if form.is_valid():
+            form.save()
+    return render(request, 'account_app/edit-info.html', {'form': form})
