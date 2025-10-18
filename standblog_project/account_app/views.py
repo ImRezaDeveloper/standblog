@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from .forms import LoginForm, UserEditForm
 
 # Create your views here.
 
@@ -12,15 +13,14 @@ def login_user(request):
         return redirect('/')
     
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(username=form.cleaned_data.get('username'))
             login(request, user)
             return redirect('/')
-        else:
-            return HttpResponse('user not found!')
-    return render(request, 'account_app/login.html', {})
+    else:
+        form = LoginForm()
+    return render(request, 'account_app/login.html', {'form': form})
     
 def logout_user(request):
     logout(request)
@@ -49,3 +49,14 @@ def register_user(request):
         login(request, user)
         return redirect('/')
     return render(request, 'account_app/register.html', {})
+
+# edit-info-user
+def edit_info_user(request):
+    user = request.user
+    form = UserEditForm(instance=user)
+    if request.method == 'POST':
+        form = UserEditForm(instance=user, data=request.POST)
+        
+        if form.is_valid():
+            form.save()
+    return render(request, 'account_app/edit-info.html', {'form': form})

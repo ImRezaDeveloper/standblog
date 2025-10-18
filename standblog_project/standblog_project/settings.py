@@ -42,7 +42,12 @@ INSTALLED_APPS = [
     'home_app',
     'account_app',
     'blog_app',
-    'django_cleanup'
+    'django_cleanup',
+    
+    # library
+    'django_render_partial',
+    'django_social_share',
+    'widget_tweaks'
 ]
 
 
@@ -61,13 +66,14 @@ ROOT_URLCONF = 'standblog_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # 👈 این خط باید وجود داشته باشه
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'context_processor.custom_context.recent_article'
             ],
         },
     },

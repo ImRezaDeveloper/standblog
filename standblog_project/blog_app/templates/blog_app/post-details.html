@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {{ article.title }}
+{% endblock %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="heading-page header-text">
+  <section class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-content">
+            <h4>Post Details</h4>
+            <h2>{{ article.title }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="blog-posts grid-system">
+  <div class="container">
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-lg-8">
+        <div class="all-blog-posts">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="blog-post">
+                <div class="blog-thumb">
+                  <img src="{{ article.image.url }}" alt="">
+                </div>
+                <div class="down-content">
+                  <span>{{ article.category.first }}</span>
+                  <a href="{% url 'single-article' article.slug %}"><h4>{{ article.title }}</h4></a>
+                  <ul class="post-info">
+                    <li><a href="#">{{ article.author.username }}</a></li>
+                    <li><a href="#">{{ article.created }}</a></li>
+                    <li><a href="#">{{ comments|length }} Comments</a></li>
+                  </ul>
+                  <p>{{ article.body }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="col-lg-12">
+              <div class="sidebar-item comments">
+                <div class="sidebar-heading">
+                  <h2>{{ article.article_comment.all|length }} Comment{% if comments|length != 1 %}s{% endif %}</h2>
+                </div>
+                <div class="content">
+                  <ul>
+                    
+                    {% for comment in article.article_comment.all %}
+                      {% if comment.parent == None %}
+                        <li>
+                        <div class="author-thumb">
+                          <img src="{% static 'images/comment-author-01.jpg' %}" alt="">
+                        </div>
+                        <div class="right-content">
+                          <h4>{{ comment.user.username }} <span>{{ comment.created_at }}</span></h4>
+                          <p>{{ comment.body }}</p>
+                          <button class="btn btn-primary" onclick="set_id({{comment.id}})">Reply</button>
+                        </div>
+                      </li>
+                      {% else %}
+                      <li class="replied">
+                          <div class="author-thumb">
+                            <img src=" {% static 'images/comment-author-02.jpg' %}" alt="">
+                          </div>
+                          <div class="right-content">
+                            <h4>{{comment.user.username}}<span>{{comment.created_at}}</span></h4>
+                            <p>{{comment.body}}</p>
+                          </div>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                      
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comment Form -->
+            <div class="col-lg-12">
+              <div class="sidebar-item submit-comment">
+                <div class="sidebar-heading">
+                  <h2>Your Comment</h2>
+                </div>
+                <div class="content">
+                  <form id="comment" action="{% url 'single-article' article.slug %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                      <input type="hidden" id="parent_id" value="" name="parent_id">
+                      <div class="col-lg-12">
+                        <fieldset>
+                          <textarea name="body" rows="6" id="message" placeholder="Type your comment" required></textarea>
+                        </fieldset>
+                      </div>
+                      <div class="col-lg-12">
+                        <fieldset>
+                          <button type="submit" id="form-submit" class="main-button">Submit</button>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div> <!-- /.row -->
+        </div> <!-- /.all-blog-posts -->
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+          <div class="sidebar">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="sidebar-item recent-posts">
+                  <div class="sidebar-heading">
+                    <h2>Recent Posts</h2>
+                  </div>
+                  <div class="content">
+                    {% include 'includes/side_bar.html' %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+<script>
+  function set_id(id){
+    document.getElementById('parent_id').value = id
+    window.location.href = '#body'
+  }
+</script>
+{% endblock %}
