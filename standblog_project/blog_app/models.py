@@ -31,11 +31,9 @@ class ArticleModel(models.Model):
     image = models.ImageField(upload_to='media/blogs', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-<<<<<<< HEAD
     # custom queryset
     objects = models.Manager()
     custom_query = ArticleManager()
-=======
     slug = models.SlugField(max_length=100, null=True, blank=True)
     
     class Meta:
@@ -66,7 +64,6 @@ class ContactUs(models.Model):
     text = models.CharField(max_length=100)
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
->>>>>>> blog
     
     def __str__(self):
         return self.title

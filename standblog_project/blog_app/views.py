@@ -4,9 +4,8 @@ from django.core.paginator import Paginator
 from .forms import ContactUsForms
 from django.db.models import Count
 
-<<<<<<< HEAD
 # Create your views here.
-=======
+
 # Create your views here.
 
 def post_detail(request, slug):
@@ -57,4 +56,3 @@ def contact_us(request):
     else:
         form = ContactUsForms()
     return render(request, 'blog_app/contact_us.html', {'form': form})
->>>>>>> blog
