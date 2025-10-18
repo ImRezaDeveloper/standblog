@@ -4,6 +4,6 @@ from blog_app.models import ArticleModel, Category
 
 def home(request):
     # articles = ArticleModel.objects.all()
-    articles = ArticleModel.custom_query.all()
+    articles = ArticleModel.objects.all()
     categories = Category.objects.all()
     return render(request, 'home_app/index.html', {'articles': articles, 'category': categories})

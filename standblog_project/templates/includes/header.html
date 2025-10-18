@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load filters %}
   
 <!--
 
@@ -49,6 +49,9 @@ https://templatemo.com/tm-551-stand-blog
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+              </li> 
+              <li class="nav-item">
+                <a class="nav-link" href="#">{% current_time "%Y-%m-%d" %}</a>
               </li>              
               {% if request.user.is_authenticated %}
                 <li class="nav-item">
