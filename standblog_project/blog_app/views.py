@@ -6,10 +6,10 @@ from django.db.models import Count
 from django.views.generic.base import TemplateView, RedirectView
 # from django.views.generic.list import Crea
 from django.views.generic.detail import DetailView
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView, ListView
 from django.views.generic.edit import FormView, CreateView
 from django.urls import reverse_lazy
-
+from .blog_mixins import LoginRequiredMixin
 # Create your views here.
 
 # Create your views here.
@@ -63,24 +63,24 @@ def contact_us(request):
         form = ContactUsForms()
     return render(request, 'blog_app/contact_us.html', {'form': form})
 
-# class ArticleList(ListView):
-#     queryset = ArticleModel.objects.all()
-#     template_name = 'blog_app/article_list.html'
-    
-#     def get(self, request):
-#         page = request.GET.get('page')
-#         paginator = Paginator(self.queryset, 1)
-#         object_list = paginator.get_page(page)
-#         return render(request, self.template_name, {'articles': object_list})
-
-class ArticleList(TemplateView):
-    
+class ArticleList(LoginRequiredMixin, ListView):
+    queryset = ArticleModel.objects.all()
     template_name = 'blog_app/article_list.html'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['articles'] = ArticleModel.objects.all()
-        return context
+    def get(self, request):
+        page = request.GET.get('page')
+        paginator = Paginator(self.queryset, 1)
+        object_list = paginator.get_page(page)
+        return render(request, self.template_name, {'articles': object_list})
+
+# class ArticleList(LoginRequiredMixin, ListView):
+#     model = ArticleModel
+#     paginate_by = 1
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['articles'] = ArticleModel.objects.all()
+#         return context
     
 class HomePageRedirectView(RedirectView):
     # url = '/'
