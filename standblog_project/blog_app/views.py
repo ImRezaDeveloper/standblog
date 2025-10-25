@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.views.generic.base import TemplateView, RedirectView
 # from django.views.generic.list import Crea
 from django.views.generic.detail import DetailView
+from django.views.generic import UpdateView, DeleteView
 from django.views.generic.edit import FormView, CreateView
 from django.urls import reverse_lazy
 
@@ -129,4 +130,13 @@ class MessageView(CreateView):
         instance.email = self.request.user.email
         instance.save()
         return super().form_valid(form)
-        
+
+class MessageUpdateView(UpdateView):
+    model = ContactUs
+    fields = ('title', 'text', 'email')
+    template_name_suffix = '_update_form'
+    success_url = 'home'
+
+class MessageDeleteView(DeleteView):
+    model = ContactUs
+    success_url = reverse_lazy('home')
