@@ -83,3 +83,19 @@ class ContactUs(models.Model):
     class Meta:
         verbose_name='ارتباط با ما'
         verbose_name_plural='ارتباطات'
+
+class Like(models.Model):
+    article = models.ForeignKey(ArticleModel, on_delete=models.CASCADE, related_name='article_likes', verbose_name='مقاله')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر', related_name='user_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        """Meta definition for MODELNAME."""
+
+        verbose_name = 'لایک'
+        verbose_name_plural = 'لایک ها'
+        ordering = ('-created_at', )
+
+    def __str__(self):
+        """Unicode representation of MODELNAME."""
+        return self.article.title

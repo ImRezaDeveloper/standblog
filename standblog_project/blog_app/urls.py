@@ -10,5 +10,6 @@ urlpatterns = [
     path('contact-us/', views.ContactUsView.as_view(), name='contact_us'),
     path('contact-us/<int:pk>', views.MessageUpdateView.as_view(), name='contact_us'),
     path('contact-us/delete/<int:pk>', views.MessageDeleteView.as_view(), name='message_delete'),
-    path('redirect', views.HomePageRedirectView.as_view(), name='redirect')
+    path('redirect', views.HomePageRedirectView.as_view(), name='redirect'),
+    path('article/<slug:slug>/like/', views.likeArticle, name='article_like'),
 ]

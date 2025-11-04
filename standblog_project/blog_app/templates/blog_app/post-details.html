@@ -43,6 +43,13 @@
                     <li><a href="#">{{ comments|length }} Comments</a></li>
                   </ul>
                   <p>{{ article.body }}</p>
+                  <ul class="post-tags">
+                    {% if is_like %}
+                    <li><a href="{% url 'article_like' slug=article.slug %}"><i class="fa fa-heart"></i></a>{{article.article_likes.all.count}}</li>
+                    {% else %}
+                    <li><a href="{% url 'article_like' slug=article.slug %}"><i class="fa fa-heart-o"></i></a>{{article.article_likes.all.count}}</li>
+                    {% endif %}
+                  </ul>
                 </div>
               </div>
             </div>

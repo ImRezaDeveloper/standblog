@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import ArticleModel, Category, Comment, ContactUs
+from django.urls import reverse
+from .models import ArticleModel, Category, Comment, ContactUs, Like
 from django.core.paginator import Paginator
 from .forms import ContactUsForms
 from django.db.models import Count
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import TemplateView, RedirectView, View
 # from django.views.generic.list import Crea
 from django.views.generic.detail import DetailView
 from django.views.generic import UpdateView, DeleteView, ListView
@@ -89,21 +90,34 @@ class HomePageRedirectView(RedirectView):
 class ArticleDetail(DetailView):
     model = ArticleModel
     template_name = 'blog_app/post-details.html'
-    
+    context_object_name = 'article'
+
     def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = ArticleModel.objects.get(slug=self.kwargs['slug'])
-        return queryset
-    
-    def get_context_data(self, **kwargs,):
+        return ArticleModel.objects.filter(slug=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["article"] = ArticleModel.objects.get(slug=self.kwargs['slug'])
+        context['comments'] = Comment.objects.filter(article=self.get_object(), parent=None)
+        article = ArticleModel.objects.get(slug=self.object.slug)
+        if self.request.user.user_likes.filter(article=article, user_id=self.request.user.id):
+            context['is_like'] = True
+        else:
+            context['is_like'] = False
         return context
-    
-    def post(self, request):
+
+    def post(self, request, *args, **kwargs):
+        article = self.get_object()
         body = request.POST.get('body')
         parent_id = request.POST.get('parent_id')
-        Comment.objects.create(body=body, article=self.queryset, user=request.user, parent_id=parent_id)
+
+        Comment.objects.create(
+            body=body,
+            article=article,
+            user=request.user,
+            parent_id=parent_id
+        )
+        return redirect(request.path)
+
         
 class ContactUsView(FormView):
     template_name = 'blog_app/contact_us.html'
@@ -140,3 +154,13 @@ class MessageUpdateView(UpdateView):
 class MessageDeleteView(DeleteView):
     model = ContactUs
     success_url = reverse_lazy('home')
+
+def likeArticle(request, slug):
+    article = ArticleModel.objects.get(slug=slug)
+    try:
+        like = Like.objects.get(article=article, user_id=request.user.id)
+        like.delete()
+    except:
+        like = Like.objects.create(article=article, user_id=request.user.id)
+        
+    return redirect('single-article', slug)
