@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from .models import ArticleModel, Category, Comment, ContactUs, Like
@@ -160,7 +161,7 @@ def likeArticle(request, slug):
     try:
         like = Like.objects.get(article=article, user_id=request.user.id)
         like.delete()
+        return JsonResponse({"response": "unliked"})
     except:
         like = Like.objects.create(article=article, user_id=request.user.id)
-        
-    return redirect('single-article', slug)
+        return JsonResponse({"response": "liked"})
